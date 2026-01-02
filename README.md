@@ -5,7 +5,7 @@
 AureliusGPT-Torch is an 845k, PyTorch and SentencePiece boosted SLM pretrained on _Meditations_ by Marcus Aurelius and other adjacent philosophical works. It is a larger size, more comprehensive reimplementation of 
 [AureliusGPT](https://github.com/tarush-ai/AureliusGPT), a smaller model trained on the same core corpus, but using a handwritten/NumPy first (zero PyTorch or prewritten tokenizer) approach.
 
-Rather than reimplementing a custom BPE algorithm and tokenizer backpropagation from scratch like its brother repo, AureliusGPT-Torch trains SentencePiece on its corpus and relies on PyTorch for autograd.
+Rather than reimplementing a custom BPE algorithm and tokenizer backpropagation from scratch like its sibling repo, AureliusGPT-Torch trains SentencePiece on its corpus (detailed in Data) and relies on PyTorch for autograd.
 
 ## Usage
 
@@ -130,7 +130,7 @@ After the teacher model is converted to Llama 3.2 1B, I will implement config ed
 
 Currently, training highlights training and validation loss, as well as gradient normalization based on the train/test split to identify overfitting. In a future version, this will be tracked in an easy-to-interpret, modular plot for the user for ease of training.
 
-Beyond weight tuning, config.py will be helpfully self tuned in a future version, changing the learning rate, number of epochs, batch size, and other aspects of training. Therefore, after running n training cycles on its own, the model will iteratively improve its training performance so minimal training optimization is required. 
+Beyond weight tuning, config.py will be helpfully automatically adjusted in a future version, changing the learning rate, number of epochs, batch size, and other aspects of training. Therefore, after running n training cycles on its own, the model will iteratively improve its training performance so minimal training optimization is required. 
 
 ### Model Upscale
 
@@ -141,7 +141,37 @@ A future project will use the LoRA'd Llama 3.2 1B model to generate signifcantly
 
 Please feel free to submit a pull request and become a contributor to AureliusGPT (on any of the above listed improvements, or on an entirely different issue). 
 
+
+
 ## Sample Outputs
+
+### Overview
+
+Some malformed characters and spacing artifacts are due to SentencePiece segmentation and Unicode normalization interactions at small scale, not post-processing errors. With an increased vocab size and optimized Unicode, these errors would not persist.
+
+The config file used to generate these results is on GitHub, but here are the relevant stats:
+```
+vocab_size = 4000
+
+num_blocks = 6
+d_model = 64
+h = 4
+d_head = 16
+d_ff = 64
+
+#training time
+batch_size = 512
+num_epochs = 50
+max_seq_length = 512
+lr = 1e-3
+
+#runtime
+max_tokens = 200
+temperature = 0.8
+justification_model = "gpt-4"
+argmax = False     
+```
+
 
 ### Sample Output 1: "The world "
 
@@ -166,6 +196,8 @@ The phrase "opportunity to thyself unto himself" seems to echo Stoic teachings a
 
 Overall, while the output bears semblances to the Stoic philosophy and style of Marcus Aurelius, the linguistic inaccuracies and incoherencies limit the model's score. Improvements could be made through refining the model's grasp of grammatical structures and semantic context.
 
+---
+
 ### Sample Output 2: "Death "
 
 User: Death
@@ -187,6 +219,8 @@ In semantic terms, the toy model presents various stoic elements like maintainin
 The model also presents some reflections on human nature, societal matters, and philosophy, showing its ability to generate content from the training material. However, these reflections are scattered throughout and don't weave into a coherent message.
 
 Overall, considering this is a toy model and its limitations, the generated output shows some application of the stoic principles as seen in Meditations by Marcus Aurelius, but lacks the polish and coherence of the original text.
+
+---
 
 ### Sample Output 3: "Pain is "
 
