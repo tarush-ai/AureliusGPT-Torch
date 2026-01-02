@@ -5,7 +5,7 @@
 AureliusGPT-Torch is an 845k, PyTorch and SentencePiece boosted SLM pretrained on _Meditations_ by Marcus Aurelius and other adjacent philosophical works. It is a larger size, more comprehensive reimplementation of 
 [AureliusGPT](https://github.com/tarush-ai/AureliusGPT), a smaller model trained on the same core corpus, but using a handwritten/NumPy first (zero PyTorch or prewritten tokenizer) approach.
 
-Rather than reimplementing a custom BPE algorithm and tokenizer backpropogation from scratch like its brother repo, AureliusGPT-Torch trains SentencePiece on its corpus and relies on PyTorch for autograd.
+Rather than reimplementing a custom BPE algorithm and tokenizer backpropagation from scratch like its brother repo, AureliusGPT-Torch trains SentencePiece on its corpus and relies on PyTorch for autograd.
 
 ## Usage
 
@@ -22,7 +22,7 @@ If you wish to have a "Stoic Validator," please create a .env file of the format
 OPENAI_API_KEY = sk_proj_YOUR_OPENAI_API_KEY_HERE
 ```
 
-Alternatively, you can run from CLI and make the neccesary changes:
+Alternatively, you can run from CLI and make the necessary changes:
 ```
 export OPENAI_API_KEY=sk_proj_YOUR_OPENAI_API_KEY_HERE
 ```
@@ -56,12 +56,12 @@ python -m model.vocabulary.preprocess test YOUR_RELATIVE_FILEPATH_HERE
 
 ## Data
 The original corpus of _Meditations_ by Marcus Aurelius is 89k tokens approximately when tokenized by a SentencePiece BPE tokenizer trained on a vocabulary length of 2,000. Using Kaplan et al. Chinchilla scaling laws,
-the expected parameter size of the model would be 8.9k parameters (taking the less conservative 1:10 ratio of parameters to corpus tokens). However, given the specificity of the model, I contradict this ratio.
+the expected parameter size of the model would be 8.9k parameters (taking the less conservative 1:10 ratio of parameters to corpus tokens). However, given the smaller size of the model and its lack of focus on general intelligence (instead, focused on generating Stoic-adjacent, Aurelius flavored text), this ratio does not apply.
 
-Given the risk of these models to heavily overfit, optimizing the ratio (even if there are more parameters than there are tokens) are critical. Therefore, I required another corpus of data that I did not have access to.
+Given the risk of these models to heavily overfit, optimizing the ratio (even if there are more parameters than there are tokens) is critical. Therefore, I required another corpus of data that I did not have access to.
 
 As a result, I turned to the strategy of using *Off Policy, Sequence Level Knowledge Distillation* from a larger model (Llama 3.2 1B). First, I finetuned the model on the corpus of meditations using [Unsloth AI's notebook](https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.2_(1B_and_3B)-Conversational.ipynb).
-Then, I used it to generate approximately 122k tokens of synthetic data over 100 iterations asking it common stoic prompts. I used Google Colab's inbuilt Tesla T4 GPU to run this data generation, which took about 1.5 hours.
+Then, I used it to generate approximately 122k tokens of synthetic data over 100 iterations asking it common stoic prompts. I used Google Colab's inbuilt Tesla T4 GPU to run this data generation, which took about 1.5 hours. I do not match logits or trajectories, only generated text; therefore, this approach also pulls elements from instruct-style distillation or offline student-teacher SFT methods. 
 Note: I did not run it from the project directory due to my lack of GPU configuration; however, the adapted notebook has been included.
 
 One critical limitation in this approach is the inefficacy of my prompt library: I did not explicitly instruct the model to focus on _Meditations_ by Marcus Aurelius, enabling the model to hallucinate and pull from various sources of data.
@@ -69,7 +69,7 @@ Future iterations of AureliusGPT-Torch will account for this problem thoroughly 
 Stoic or Stoic adjacent data to ensure better generation quality.
 
 My preprocessing logic between AureliusGPT-Torch and AureliusGPT is the same; I rely on Greek transliterations, Unicode normalization, regex patterns, and special "<BEGIN>", "<END>", and "<PAD>" (at training time) tokens.
-I take a similar approach for my preprocessing of _Meditations_ corpus to feed into LoRA; to avoid confusion between Llama's internal tokens and mine, I avoid adding them in, instead semantically replacing them after the corpus has been generated.
+I take a similar approach for my preprocessing of _Meditations_ corpus to feed into LoRA; to avoid confusion between Llama 3.2 1B's internal tokens and mine, I avoid adding them in, instead semantically replacing them after the corpus has been generated.
 
 I added the Meditations data twice to the final corpus to weight its significance, especially given its lower token count and the lower quality of synthetic data. My training split was 80% of the pure Meditations data and all the synthetic data; my validation split was 20% of the pure Meditations data.
 
@@ -77,7 +77,7 @@ I added the Meditations data twice to the final corpus to weight its significanc
 
 ### Overview
 I use PyTorch's weight initialization (as opposed to a Gaussian process W ~ 𝒩(0, 0.02) for my manual AureliusGPT). I rely on the Transformer architecture from Attention is All You Need (Vaswani et al.) in my implementation.
-Given the small scale of this project, all training (except for the Llama LoRA for synthetic data) was conducted on a local CPU, and was sequential (not concurrent, hence my lack of ThreadPool or ProcessPoolExecutor).
+Given the small scale of this project, all training (except for the Llama 3.2 1B LoRA for synthetic data) was conducted on a local CPU, and was sequential (not concurrent, hence my lack of ThreadPool or ProcessPoolExecutor).
 I rely on a PostNorm, 6 Transformer block architecture for AureliusGPT-Torch of the format
 
 GPT -> {TransformerBlock -> TransformerBlock -> TransformerBlock...}x6 -> logits
@@ -105,10 +105,41 @@ model in the future.
 
 ### Inference 
 
-While I rely on Off Policy, Sequence Level Knowledge Distillation with LLAMA as outlined in my Data section, there is a clear route to implementing Best of N Sampling through concurrent model generations and rankings.
-This can again rely on the finetuned LLAMA model or any comparable instruct model on its level.
+While I rely on Off Policy, Sequence Level Knowledge Distillation with Llama 3.2 1B as outlined in my Data section, there is a clear route to implementing Best of N Sampling through concurrent model generations and rankings.
+This can again rely on the finetuned Llama 3.2 1B model or any comparable instruct model on its level.
 
 This model, once fully completed, will be put on HuggingFace and hosted on my website (tarush.ai/aureliusgpt-torch). 
+
+## Future Work on AureliusGPT
+
+### Synthetic Data Generation / Teacher Model
+
+Currently, my LoRA'd Llama 3.2 1B model is run in an ipynb on a Tesla T4 GPU. A future version will integrate the LoRA and synthetic data generation, and relevant GPU plumbing, into the scope of this project. 
+
+Additionally, the universal "teacher/Stoic justifier" model will be the adapted Llama 3.2 1B model, deviating from the OpenAI Chat Completions API GPT-4o approach. 
+
+### Model Visibility on HuggingFace
+
+In a future version, the fitting and accuracy optimized (see Overfitting Tracking / Adaptable Training) files of Llama 3.2 1B's LoRA weights and AureliusGPT-Torch will be loaded onto HuggingFace for fast import and inference.
+
+### Top N Sampling
+
+After the teacher model is converted to Llama 3.2 1B, I will implement config editable concurrent AureliusGPT generation and top N sampling to ensure the highest quality result.
+
+### Overfitting Tracking / Adaptable Training
+
+Currently, training highlights training and validation loss, as well as gradient normalization based on the train/test split to identify overfitting. In a future version, this will be tracked in an easy-to-interpret, modular plot for the user for ease of training.
+
+Beyond weight tuning, config.py will be helpfully self tuned in a future version, changing the learning rate, number of epochs, batch size, and other aspects of training. Therefore, after running n training cycles on its own, the model will iteratively improve its training performance so minimal training optimization is required. 
+
+### Model Upscale
+
+A future project will use the LoRA'd Llama 3.2 1B model to generate signifcantly more parameters of stoic adjacent text, as well as utilizing the works of Zeno, Epictetus, and other famous Stoic thinkers, to build either a Transformer or an MoE model ("Epictetus": _____, "Zeno": _______, "Aurelius": _______) called "StoicDiscourseLM". This will incorporate many elements (including preprocessing functionality) of AureliusGPT but will also be a unique project.
+
+
+## Open Source Contributions
+
+Please feel free to submit a pull request and become a contributor to AureliusGPT (on any of the above listed improvements, or on an entirely different issue). 
 
 ## Sample Outputs
 
