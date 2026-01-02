@@ -45,9 +45,3 @@ class Preprocessor:
     def split_into_sentences(self, text: str) -> list[str]:
         sentences = re.split(r'(?<=[.!?])\s+', text)
         return [s.strip() for s in sentences if s.strip()]
-
-process = Preprocessor()
-with open(os.path.join(PROJECT_ROOT, "meditations.txt"), "r") as f:
-    meditations = f.read()
-p = process.process(meditations)
-print(p[1])

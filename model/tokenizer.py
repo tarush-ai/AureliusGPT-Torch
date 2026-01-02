@@ -6,6 +6,7 @@ from model.preprocess import Preprocessor
 class Tokenizer:
     def __init__(self):
         self.path = os.path.join(PROJECT_ROOT, "data", "tokenizer.model")
+        
     
     def train(self, all_sentences):
         spm.SentencePieceTrainer.train(
@@ -20,11 +21,5 @@ class Tokenizer:
     def encode(self, text):
         return self.sp.encode(text)
 
-process = Preprocessor()
-with open(os.path.join(PROJECT_ROOT, "meditations.txt"), "r") as f:
-    meditations = f.read()
-p = process.process(meditations)
-
-token = Tokenizer()
-token.train(p[1])
-print(len(token.encode(p[0])))
+    def decode(self, ids):
+        return self.sp.decode(ids)

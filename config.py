@@ -16,7 +16,10 @@ d_ff = 4 * d_model
 
 #training time
 batch_size = 512
-num_epochs = 10
-max_seq_length = 100
+num_epochs = 20
+max_seq_length = batch_size
 lr = 3e-4
+
+#runtime
 max_tokens = 100
+temperature = 0.8

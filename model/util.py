@@ -3,13 +3,13 @@ from config import d_model, max_seq_length
 
 class Util:
     def sinusoidal(self):
-        positionals = []
-        for i in range(d_model):            
-            if i%2 == 0:
-                positionals.append(np.sin(max_seq_length / 10000 ** (i / d_model)))
-            else:
-                positionals.append(np.cos(max_seq_length / 10000 ** (i / d_model)))
-        return np.array(positionals)
-             
-
-    
+        PE = np.zeros((max_seq_length, d_model))
+        
+        for pos in range(max_seq_length):
+            for i in range(0, d_model, 2):
+                div_term = 10000 ** (i / d_model)
+                PE[pos, i] = np.sin(pos / div_term)
+                if i + 1 < d_model:
+                    PE[pos, i + 1] = np.cos(pos / div_term)
+                    
+        return PE
