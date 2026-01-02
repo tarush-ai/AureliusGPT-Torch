@@ -9,7 +9,7 @@ class Run:
     def __init__(self):
         self.tokenizer = Tokenizer()
         self.model = Transformer()
-        self.path = os.path.join(PROJECT_ROOT, "data", f"epoch_{num_epochs}.pt")
+        self.path = os.path.join(PROJECT_ROOT, "data", f"epoch_12.pt")
         self.model.load_state_dict(torch.load(self.path)) 
         self.model.eval()
 
@@ -17,7 +17,7 @@ class Run:
         with open(os.path.join(PROJECT_ROOT, "meditations.txt"), "r") as f:
             meditations = f.read()
         
-        print("AureliusGPT\n\n\n\n")
+        print("AureliusGPT\n\n")
 
         input_query = input("User: ")
         print("\n")
@@ -55,7 +55,7 @@ class Run:
     def postprocess(self, text):
         text = re.sub("<BEGIN>", "\n\n", text)
         text = re.sub("<END>", "\n\n", text)
-        return text
+        return "AURELIUS: " + text
             
 
 if __name__ == "__main__":
