@@ -7,6 +7,53 @@ AureliusGPT-Torch is an 845k, PyTorch and SentencePiece boosted SLM pretrained o
 
 Rather than reimplementing a custom BPE algorithm and tokenizer backpropogation from scratch like its brother repo, AureliusGPT-Torch trains SentencePiece on its corpus and relies on PyTorch for autograd.
 
+## Usage
+
+To get started, run:
+
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+If you wish to have a "Stoic Validator," please create a .env file of the format:
+```
+OPENAI_API_KEY = sk_proj_YOUR_OPENAI_API_KEY_HERE
+```
+
+Alternatively, you can run from CLI and make the neccesary changes:
+```
+export OPENAI_API_KEY=sk_proj_YOUR_OPENAI_API_KEY_HERE
+```
+
+A future version of this model will rely on the finetuned Llama 3.2 1B parameter model as the validator. 
+
+To finetune the teacher model for distillation / synthetic data generation, open the Colab Notebook (model/datageneration/llama321b_meditations_lora_unsloth.ipynb) and run it on the provided Tesla T4 GPU. If the data has not been generated, training will rely on the core _Meditations_ corpus. Future versions of this repository will have the synthetic data generation pipeline / Unsloth package library wrapped into the core repository with GPU plugin/handling.
+
+To run training from the source directory, run:
+```
+python -m model.train
+```
+
+To run the model in CLI, run:
+```
+python -m model.run
+```
+
+If you want to experiment with the preprocessing or tokenization logic in the corpus, .test() functions have been wrapped into both. You can try both:
+
+```
+python -m model.vocabulary.tokenizer test
+python -m model.vocabulary.preprocess test 
+```
+
+Or, if you have your own unique testfile (this may yield errors due to the hyperspecific nature of these files:
+```
+python -m model.vocabulary.tokenizer test YOUR_RELATIVE_FILEPATH_HERE
+python -m model.vocabulary.preprocess test YOUR_RELATIVE_FILEPATH_HERE
+```
+
 ## Data
 The original corpus of _Meditations_ by Marcus Aurelius is 89k tokens approximately when tokenized by a SentencePiece BPE tokenizer trained on a vocabulary length of 2,000. Using Kaplan et al. Chinchilla scaling laws,
 the expected parameter size of the model would be 8.9k parameters (taking the less conservative 1:10 ratio of parameters to corpus tokens). However, given the specificity of the model, I contradict this ratio.
@@ -65,7 +112,7 @@ This model, once fully completed, will be put on HuggingFace and hosted on my we
 
 ## Sample Outputs
 
-### Sample Output 1: "The World"
+### Sample Output 1: "The world "
 
 AureliusGPT
 
@@ -109,3 +156,27 @@ In semantic terms, the toy model presents various stoic elements like maintainin
 The model also presents some reflections on human nature, societal matters, and philosophy, showing its ability to generate content from the training material. However, these reflections are scattered throughout and don't weave into a coherent message.
 
 Overall, considering this is a toy model and its limitations, the generated output shows some application of the stoic principles as seen in Meditations by Marcus Aurelius, but lacks the polish and coherence of the original text.
+
+### Sample Output 3: "Pain is "
+
+AureliusGPT
+
+A model trained on Meditations by Marcus Aurelius.
+
+User: Pain is 
+
+AURELIUS: a common end. Whatsoever is kindly now can be, when the common proper use of all external accidents, as it doth as it be. They cannot be thy pray, doth his own proper and when are now properly be that it were that which above, even the Pl atonic, and upon this fort ified or if a man whosoever of the fig - father against reason with thee, and that common part of conv ulsion. But in matter of another; whether as that rest contented both resumed and with the things that his own operation.  ⁇ eep thyself, and all doth in others maintain.  ⁇ emember my youth s of the mind as in those that is an ext remity soever is a matter of other peculiar property, or fe ite, but for those things, nor the present themselves, and which is, hast taken out of it be the further ance of a work. That which at all things that which if it were the worse than we see with a perpetual change, and yet even with a w its of all things present ' s commonwealth, that which the satisf action of a man make rec an, it. See this is but as so much as in passion and the city, they should good things that thou such a happy man should ) so that thy refuge, is but best, nor, though but that which is to the Gods, is incidental unto that which is fitting; it be not to pass together, that that which is no more than this that is chiefest, and this, fear that is also is benef man as hitherto thou art find s neighbour should not in this doth himself, or some common good or friend ly, and what there is a man ' s nature that which we may be not in all other course of all this end is, or liberty or ators are the universe did he that both of man is an error, what is mere change? or evil. If therefore is the man likewise. Now all, and that is the series and un sp and the case and that which is either lot and make himself from the mind is now, that which is bound to be no hurt, if my possession of the several roll mutation and that which is not in his kind of all his neighbour is now be a man ' s uch is sociably and necessary? or a man, or a series of those that, that unto man may be a man either a man before after a man whose end; but a man, by man, earth; and the common to whom thy thoughts with this place to live long, and conceit and objects, honour, and re ward on ge song to depart avoid or dispersion, therein any man ste ady, thou didst not lust after one that neither with anything, or st y.  ⁇ es; and that which is proper, is sure that which is allotted unto man whose arm ho pes, I think in regard of all anger: whether all this nature, which is most justly be no man ' s turn. To be a man should rest and separation to be in a common earth, and all things, and duration and all things themselves it were not in some man to embrace whatsoever doth send; and that part and from it were transl ated; therefore, and all things that weight y him, and it, temperate, for their wills that are reasonable faculty, and another: from the examples of such a very little pro cure that which is unto her,) are in thy thoughts that is said, before. By so always be no evil; good and una ffect not grieve more fre quent public like one that the reason, is done, which is proper and what things, or pain ful both be performed to live according to represent pt ations of another is, and the use to do nothing against their pleasure, and opinions, but withdraw. Then long.  ⁇ ep id either the world. It is, either reasonable administration s work of an instant ), is end. What then at all hurtful unto the C ord ant; and not to want of all things: and this and how either form and commonwealth, is, or proper to all substances. But if he is it suffice from all kind and so are of those things in them sw pp ly my particular, and all resumed to man may be a very ridiculous as it is sociably and coherence of a man, why should endeavour anything else, and a certain end.  
+
+ 
+Stoic Justification Agent: 
+This output gets a score of 40/100. 
+
+The model seems to have taken some elements from "Meditations", like the discussions of commonality, the state of being, mortality, and reason, which align fairly well with Stoic philosophies. For instance, Marcus Aurelius often contemplates the nature of humans, life, and existence in the universe, as well as postulates on proper rational behavior. 
+
+However, these themes are drastically overshadowed by the model's incoherency. Semantically, it fails slightly because the output fails to follow a single coherent topic. Instead, there are sudden jumps from one idea to another resulting in lack of contextual associations between sentences. For example, the phrases like "the mind is now", "this end is", or "thy refuge, is but best, nor, though but that which is to the gods, is incidental unto" are hard or impossible to comprehend logically.
+
+From a linguistic perspective, the model fails significantly. There's repetitive usage of certain phrases such as "that which is" and "man", which greatly hampers the text's readability. Moreover, the response is littered with disjointed phrases, narrative inconsistencies, grammatical errors, and meaningless symbols, which makes the text challenging to read and comprehend.
+
+In the context of stoic teachings, while the text vaguely alludes to themes of mortality, human nature, and life's ephemity that Marcus Aurelius often touched upon, it fails to do so in a meaningful or insightful manner. The output hardly embodies stoicism's emphasis on logic, self-discipline, and practical wisdom.
+
+In conclusion, while the model has some alignment with the overall themes of "Meditations", the output lacks coherence, linguistic accuracy, and effective conveyance of Stoic philosophy. Significant work is needed to improve on these areas.
