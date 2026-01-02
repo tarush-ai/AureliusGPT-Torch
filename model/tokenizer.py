@@ -6,7 +6,9 @@ from model.preprocess import Preprocessor
 class Tokenizer:
     def __init__(self):
         self.path = os.path.join(PROJECT_ROOT, "data", "tokenizer.model")
-        
+        self.sp = spm.SentencePieceProcessor()
+        if os.path.exists(self.path):
+            self.sp.Load(self.path)
     
     def train(self, all_sentences):
         spm.SentencePieceTrainer.train(
@@ -15,7 +17,6 @@ class Tokenizer:
             vocab_size=vocab_size,
             user_defined_symbols=["<BEGIN>", "<END>", "<PAD>"]
         )
-        self.sp = spm.SentencePieceProcessor()
         self.sp.load(self.path)
     
     def encode(self, text):
