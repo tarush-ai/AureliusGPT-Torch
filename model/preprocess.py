@@ -38,7 +38,7 @@ class Preprocessor:
                 continue
             sentences = self.split_into_sentences(section)
             if sentences:
-                final_sections.append(sentences)
+                final_sections.extend(sentences)
         
         return meditations, final_sections
 
