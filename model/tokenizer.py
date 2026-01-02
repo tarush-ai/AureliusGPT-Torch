@@ -14,6 +14,7 @@ class Tokenizer:
         spm.SentencePieceTrainer.train(
             sentence_iterator=iter(all_sentences), 
             model_prefix="data/tokenizer", 
+            model_type="bpe",
             vocab_size=vocab_size,
             user_defined_symbols=["<BEGIN>", "<END>", "<PAD>"]
         )

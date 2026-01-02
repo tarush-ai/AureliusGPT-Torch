@@ -9,17 +9,18 @@ vocab_size = 4000
 
 #model
 num_blocks = 6
-d_model = 256
+d_model = 64
 h = 4
 d_head = d_model // h
 d_ff = 4 * d_model
 
 #training time
-batch_size = 32
-num_epochs = 10
-max_seq_length = batch_size
-lr = 3e-4
+batch_size = 512
+num_epochs = 50
+max_seq_length = 512
+lr = 1e-3
 
 #runtime
 max_tokens = 200
 temperature = 0.8
+justification_model = "gpt-4"

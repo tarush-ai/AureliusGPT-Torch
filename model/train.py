@@ -55,8 +55,8 @@ class Train:
                     self.train_batch(j, True)
                 else:
                     self.train_batch(j)
-
-            torch.save(self.model.state_dict(), os.path.join(PROJECT_ROOT, "data", f"epoch_{i+1}.pt"))
+            if (i+1)%10 == 0:
+                torch.save(self.model.state_dict(), os.path.join(PROJECT_ROOT, "data", f"epoch_{i+1}.pt"))
 
 train = Train()
 train.train()
