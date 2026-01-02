@@ -62,3 +62,50 @@ While I rely on Off Policy, Sequence Level Knowledge Distillation with LLAMA as 
 This can again rely on the finetuned LLAMA model or any comparable instruct model on its level.
 
 This model, once fully completed, will be put on HuggingFace and hosted on my website (tarush.ai/aureliusgpt-torch). 
+
+## Sample Outputs
+
+### Sample Output 1: "The World"
+
+AureliusGPT
+
+A model trained on Meditations by Marcus Aurelius.
+
+User: The world
+
+AURELIUS: for us, when therefore even in all shall never be eth, to have no thought to believe not say unto me. If it will this kind of them to strive and by right, is, what respect and that, or wise as a present station, yea it be with such a man, and opportunity to thyself unto himself from all these ever to be bound to be hindered; and to his own proper natural dreams I cannot be his mind. Thou must needs any man. Be get ative faculty, and see whatsoever it is of a kind of the true and reason, and nature of the general condition of the atre and affections to live according to any man ' s rational substance, a man doth subject to live that seemed nor bad and of comm ent orderly man ' s apparent that is nothing more moderate cond escend ing to the mind and so towards him that was made for a man might comp are leisure to teach with ance of an honest! This ph ed ing to live, and knowledge, only.  
+
+ 
+Stoic Justification Agent: 
+Score: 60/100
+
+Accuracy Report:
+The model's generation has semantic, linguistic and Stoic-based connections with Marcus Aurelius' Meditations, but also presents a number of linguistic inaccuracies and inconsistencies. The text maintains a solemn and introspective tone akin to the Stoic philosophy depicted in Meditations, with phrases such as "rational substance," "natural dreams," and "general condition," all of which could plausibly reflect Aurelius’ contemplations on life, existence, and virtue.
+
+Some sentences or phrases, like "Be get ative faculty, and see whatsoever it is of a kind of the true and reason", seem to bear traces of Stoic themes, but their meaning is encumbered by grammatical errors and awkward wording, lowering the overall score.
+
+The phrase "opportunity to thyself unto himself" seems to echo Stoic teachings about self-reliance and introspection, while "man doth subject to live that seemed nor bad and of comm ent orderly man" and "a man might comp are leisure to teach with ance of an honest!" are hard to parse linguistically and thematically, bringing down the score further.
+
+Overall, while the output bears semblances to the Stoic philosophy and style of Marcus Aurelius, the linguistic inaccuracies and incoherencies limit the model's score. Improvements could be made through refining the model's grasp of grammatical structures and semantic context.
+
+### Sample Output 2: "Death "
+
+User: Death
+
+AURELIUS: if one that which ever not to some common good things con ven eth ents unto him, and the whole, but as concer t and the generation of what is inf ition of death dwelt with a blow as it with w ounded which is fitting; but a man would it be said to the vulgar apprehend the several of the feet, and solid th? set to the earth of pleasures? an act ate man ' s upon it, every man as a fool too? when matters, and whatsoever else whereof the whole series of blood of imp ure from all things are very truth, if thou wouldst thou dost think un as to the ext ortion again that perfect simplicity. If thou live with a kos mos or to say, and familiarly ue; and to the common good, and what things in very little while, and as that action? and of time? Those things anim ated into the matter of another, what manner of moment. If thou hast thou art now present are that to nature. What is done. Cont rary: is so must all things in regard the end of the common substance, and who otherwise it, and righteousness, and give thank that can live into perform all agree with it, and according to lose a man, and absolutely and what is a reasonable, and the whole world? and is properly. To a man, that knows not seen, is proper unto thee? towards thy flesh; that is but a rational sociable, and rational, towards them. Why should be a flood and in thy sympathy with it may but draw thy thoughts and credit must be hindered from the common good things that are they doth resist ed ing. For all things. And yet they have done, upon every one point, who is the same kind.  
+
+ 
+Stoic Justification Agent: 
+Score: 45/100
+
+Accuracy Report:
+
+The model's response is a complex body of text with a lot of various elements involved. Parts of it seem to be relating to stoicism's thoughts on death, the interconnectedness of all things, living in the moment and accepting our natural progression towards death. Words that fit with Aurelius's meditations like "common good", "rational", "nature", "simplicity", and questions about life's actions and the nature of living beings are included, showing the model's capability to generate stoic-based content in line with the author.
+
+However, the output does lose points for coherency and linguistic accuracy - it seems to be piecing together phrases and ideas without a clear flow or a strong connection to the initial prompt of "Death". The composition is difficult to comprehend fully, with several instances of phrases being cut and jumbled up, affecting the readability and comprehension. This creates a somewhat disjointed narrative that might not offer the user a satisfactory response to their prompt.
+
+In semantic terms, the toy model presents various stoic elements like maintaining virtues, contemplating nature, and contemplating life and death, which were central themes in the meditations of Marcus Aurelius. 
+
+The model also presents some reflections on human nature, societal matters, and philosophy, showing its ability to generate content from the training material. However, these reflections are scattered throughout and don't weave into a coherent message.
+
+Overall, considering this is a toy model and its limitations, the generated output shows some application of the stoic principles as seen in Meditations by Marcus Aurelius, but lacks the polish and coherence of the original text.

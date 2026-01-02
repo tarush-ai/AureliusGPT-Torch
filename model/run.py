@@ -1,6 +1,6 @@
 import os, torch, re
 import torch.nn as nn
-from config import PROJECT_ROOT, num_epochs, max_tokens, temperature, max_seq_length, justification_model
+from config import PROJECT_ROOT, num_epochs, max_tokens, temperature, max_seq_length, justification_model, argmax
 from model.model import Transformer
 from model.vocab.tokenizer import Tokenizer
 from model.vocab.preprocess import Preprocessor
@@ -17,19 +17,12 @@ class Run:
         self.model.load_state_dict(torch.load(self.path)) 
         self.model.eval()
 
-    def run(self):
-        with open(os.path.join(PROJECT_ROOT, "meditations.txt"), "r") as f:
-            meditations = f.read()
-        
-        print("AureliusGPT\n\n")
-
-        print("A model trained on Meditations by Marcus Aurelius.\n\n")
-
-        print("Press 'Enter' to stop the conversation.")
-
-
+    def input(self):
         input_query = input("User: ")
+        return input_query
 
+    def run(self, input_query):
+        
         if input_query == "":
             return "INTERACTION_COMPLETE"
 
@@ -44,9 +37,13 @@ class Run:
                 currtoken = self.model(encoded)
                 last_token_logits = currtoken[-1, :] 
 
-                logits = last_token_logits / temperature
-                probs = torch.softmax(logits, dim=-1)
-                predictions = torch.multinomial(probs, num_samples=1).item()
+
+                if argmax:
+                    predictions = torch.argmax(last_token_logits).item()
+                else:
+                    logits = last_token_logits / temperature
+                    probs = torch.softmax(logits, dim=-1)
+                    predictions = torch.multinomial(probs, num_samples=1).item()
 
                 currtoken = self.tokenizer.decode([predictions]).strip()
                 if re.match(r'^[.,!?;:]', currtoken):
@@ -81,16 +78,24 @@ class Run:
             ]
         )
 
-        print(response.choices[0].message.content)
+        print("Stoic Justification Agent: \n" + response.choices[0].message.content)
 
     def main(self):
-        outputstring = ""
-        while outputstring != "INTERACTION_COMPLETE":
-            ran = self.run()
+        print("\nAureliusGPT\n")
+        print("A model trained on Meditations by Marcus Aurelius.\n\n")
+
+        while True:
+            print("\nPress 'Enter' to stop the conversation.")
+            user_input = self.input()
+
+            if user_input == "":
+                break
+
+            ran = self.run(user_input)
             outputstring = ran[1]
             postprocessed = self.postprocess(outputstring)
             print(postprocessed)
-            print(self.justify(ran[0] + postprocessed))
+            print(self.justify("Prompt: " + ran[0] + "\n\n" + postprocessed))
 
 
 

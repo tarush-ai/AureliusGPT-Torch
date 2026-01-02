@@ -24,3 +24,4 @@ lr = 1e-3
 max_tokens = 200
 temperature = 0.8
 justification_model = "gpt-4"
+argmax = False
