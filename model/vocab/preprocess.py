@@ -1,4 +1,5 @@
 import re, os, unicodedata
+import sys
 from config import PROJECT_ROOT, greekwords
 
 class Preprocessor:
@@ -54,3 +55,49 @@ class Preprocessor:
     def split_into_sentences(self, text: str) -> list[str]:
         sentences = re.split(r'(?<=[.!?])\s+', text)
         return [s.strip() for s in sentences if s.strip()]
+
+    def test(self, file):
+        processed = None
+        if file:
+            try:
+                processed = self.process(file)
+            except Exception:
+                print("The processed file is not compliant with preprocess' requirements. Falling back to default file.\n")
+                processed = None
+        if not processed:
+            test_file_path = os.path.join(os.path.dirname(__file__), "preprocess_test.txt")
+            with open(test_file_path, "r") as f:
+                processed = self.process(f.read())
+
+        output_file_path = os.path.join(os.path.dirname(__file__), "preprocess_test_output.txt")
+        with open(output_file_path, "w") as f:
+            f.write(processed[0])
+            
+        print(f"Saved to {output_file_path}.")
+
+if __name__ == "__main__":
+    file = None
+    if len(sys.argv) > 1:
+        test = sys.argv[1]
+        if test != "test":
+            print("Only permitted argument is 'test'; Please try again.")
+            pass
+
+    else:
+        print("Preprocessing logic is wrapped into overall training functionality.")
+        pass
+    
+    if len(sys.argv) > 2:
+        filepath = sys.argv[2]
+        try:
+            with open(filepath, "r") as f:
+                file = f.read()
+        except Exception as e:
+            print("Invalid filepath, falling back to original test.")
+            file = None
+
+    Preprocessor().test(file)
+
+
+
+

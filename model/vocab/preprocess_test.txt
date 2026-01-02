@@ -1,0 +1,21 @@
+
+Introduction text that should be skipped.
+
+THE FIRST BOOK
+
+I. This is the first section of the first book. It has some text.
+
+II. This is the second section. It has more text and a greek word: κόσμος.
+And a newline within the sentence.
+
+THE SECOND BOOK
+
+I. First section of the second book.
+
+II. Second section of the second book.
+
+
+
+APPENDIX
+
+Index and other stuff that should be skipped.
