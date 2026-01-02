@@ -2,8 +2,8 @@ import os, torch, re
 import torch.nn as nn
 from config import PROJECT_ROOT, num_epochs, max_tokens, temperature, max_seq_length, justification_model
 from model.model import Transformer
-from model.tokenizer import Tokenizer
-from model.preprocess import Preprocessor
+from model.vocab.tokenizer import Tokenizer
+from model.vocab.preprocess import Preprocessor
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -13,7 +13,7 @@ class Run:
     def __init__(self):
         self.tokenizer = Tokenizer()
         self.model = Transformer()
-        self.path = os.path.join(PROJECT_ROOT, "data", f"epoch_50.pt")
+        self.path = os.path.join(PROJECT_ROOT, "data", f"epoch_10.pt")
         self.model.load_state_dict(torch.load(self.path)) 
         self.model.eval()
 
@@ -90,7 +90,7 @@ class Run:
             outputstring = ran[1]
             postprocessed = self.postprocess(outputstring)
             print(postprocessed)
-            #print(self.justify(ran[0] + postprocessed))
+            print(self.justify(ran[0] + postprocessed))
 
 
 

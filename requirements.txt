@@ -3,3 +3,8 @@ torch
 sentencepiece
 openai
 python-dotenv
+unsloth
+datasets
+trl
+transformers
+google.colab

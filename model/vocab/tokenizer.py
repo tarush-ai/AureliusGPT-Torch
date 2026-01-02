@@ -1,7 +1,7 @@
 import os, io
 import sentencepiece as spm
 from config import PROJECT_ROOT, vocab_size
-from model.preprocess import Preprocessor
+from model.vocab.preprocess import Preprocessor
 
 class Tokenizer:
     def __init__(self):
