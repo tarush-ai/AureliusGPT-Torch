@@ -12,10 +12,29 @@ load_dotenv()
 class Run:
     def __init__(self):
         self.tokenizer = Tokenizer()
+        
+        #Checking if the tokenizer.model is in the root (production), if not, checking the data folder
+        token_path = os.path.join(PROJECT_ROOT, "tokenizer.model")
+        if not os.path.exists(token_path):
+            token_path = os.path.join(PROJECT_ROOT, "data", "tokenizer.model")
+            
+        if os.path.exists(token_path):
+            self.tokenizer.load_weights(token_path)
+        else:
+            print("Warning: Tokenizer model not found.")
+
         self.model = Transformer()
-        self.path = os.path.join(PROJECT_ROOT, "data", f"epoch_10.pt")
-        self.model.load_state_dict(torch.load(self.path)) 
-        self.model.eval()
+        
+        #Checking if the epoch_10.pt is in the root (production), if not, checking the data folder
+        self.path = os.path.join(PROJECT_ROOT, "epoch_10.pt")
+        if not os.path.exists(self.path):
+            self.path = os.path.join(PROJECT_ROOT, "data", "epoch_10.pt")
+            
+        if os.path.exists(self.path):
+            self.model.load_state_dict(torch.load(self.path, map_location=torch.device('cpu')))
+            self.model.eval()
+        else:
+             raise FileNotFoundError(f"Model checkpoint not found at {self.path}")
 
     def input(self):
         input_query = input("User: ")

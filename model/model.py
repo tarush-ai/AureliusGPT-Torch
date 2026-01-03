@@ -77,7 +77,7 @@ class AttentionHead(nn.Module):
 
         scores = Q @ K.T
         scores /= (d_head ** 0.5)
-        mask = torch.tril(torch.ones(X.shape[0], X.shape[0]))
+        mask = torch.tril(torch.ones(X.shape[0], X.shape[0], device=X.device))
         scores = scores.masked_fill(mask == 0, float('-inf'))
         attention = torch.softmax(scores, dim=-1)  
         return attention @ V      

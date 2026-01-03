@@ -7,15 +7,18 @@ class Tokenizer:
     def __init__(self):
         self.sp = spm.SentencePieceProcessor()
     
-    def train(self, all_sentences):
+    def train(self, all_sentences, model_prefix=None):
+        if model_prefix is None:
+            model_prefix = os.path.join(PROJECT_ROOT, "data", "tokenizer")
+            
         spm.SentencePieceTrainer.train(
             sentence_iterator=iter(all_sentences), 
-            model_prefix="data/tokenizer", 
+            model_prefix=model_prefix, 
             model_type="bpe",
             vocab_size=vocab_size,
             user_defined_symbols=["<BEGIN>", "<END>", "<PAD>"]
         )
-        self.sp.Load(self.path)
+        self.sp.Load(model_prefix + ".model")
     
     def load_weights(self, path):
         self.sp.Load(path)

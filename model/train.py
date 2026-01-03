@@ -8,13 +8,24 @@ from config import PROJECT_ROOT, batch_size, num_epochs, lr
 
 class Train:
     def __init__(self):
+        self.device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+        print(f"Training on device: {self.device}")
+        
         self.formatter = SyntheticFormatter()
         self.pre = Preprocessor()
         self.tokenizer = Tokenizer()
-        self.model = Transformer()
+        self.model = Transformer().to(self.device)
         self.loss = nn.CrossEntropyLoss()
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr)
-        self.weight_path = os.path.join(PROJECT_ROOT, "data", "weights.pt")
+        
+        if os.path.exists(os.path.join(PROJECT_ROOT, "epoch_10.pt")):
+             self.save_dir = PROJECT_ROOT
+        else:
+             self.save_dir = os.path.join(PROJECT_ROOT, "data")
+             if not os.path.exists(self.save_dir):
+                 os.makedirs(self.save_dir)
+
+        self.weight_path = os.path.join(self.save_dir, "weights.pt")
         
         # Placeholders for data
         self.train_tokenized = []
@@ -45,7 +56,9 @@ class Train:
         processed_synthetic = self.pre.process(meditations_synthetic)
 
         processed_overall_sentences = processed_pure[1] + processed_synthetic[1]
-        self.tokenizer.train(processed_overall_sentences)
+        
+        tokenizer_path = os.path.join(self.save_dir, "tokenizer")
+        self.tokenizer.train(processed_overall_sentences, model_prefix=tokenizer_path)
         
         self.trained, self.val = self.train_val(processed_pure[0], processed_synthetic[0])
         self.train_tokenized = self.tokenizer.encode(self.trained)
@@ -69,7 +82,7 @@ class Train:
         return seperated
 
     def train_batch(self, batch, print_loss=False):
-        batch = torch.LongTensor(batch)
+        batch = torch.LongTensor(batch).to(self.device)
         X = batch[0:-1]
         Y = batch[1:]
         
@@ -97,7 +110,7 @@ class Train:
         total_loss = 0
         with torch.no_grad():
             for batch in val_batches:
-                batch_tensor = torch.LongTensor(batch)
+                batch_tensor = torch.LongTensor(batch).to(self.device)
                 X = batch_tensor[0:-1]
                 Y = batch_tensor[1:]
                 logits = self.model.forward(X)
@@ -135,7 +148,7 @@ class Train:
             print(f"Epoch {i+1}; Train Loss: {avg_train_loss:.4f}; Val Loss: {val_loss:.4f}; Train Grad Norm: {avg_grad_norm:.4f}")
         
             if (i+1) % 10 == 0:
-                save_path = os.path.join(PROJECT_ROOT, "data", f"epoch_{i+1}.pt")
+                save_path = os.path.join(self.save_dir, f"epoch_{i+1}.pt")
                 torch.save(self.model.state_dict(), save_path)
 
 
