@@ -7,6 +7,8 @@ AureliusGPT-Torch is an 845k, PyTorch and SentencePiece boosted SLM pretrained o
 
 Rather than reimplementing a custom BPE algorithm and tokenizer backpropagation from scratch like its sibling repo, AureliusGPT-Torch trains SentencePiece on its corpus (detailed in Data) and relies on PyTorch for autograd.
 
+The [HuggingFace](https://huggingface.co/Tarush-AI/AureliusGPT) for this model (including both the base model weights at epoch 10 and the tokenizer/vocabulary) are contained here. 
+
 ## Usage
 
 To get started, run:
@@ -53,7 +55,6 @@ Or, if you have your own unique testfile (this may yield errors due to the hyper
 python -m model.vocabulary.tokenizer test YOUR_RELATIVE_FILEPATH_HERE
 python -m model.vocabulary.preprocess test YOUR_RELATIVE_FILEPATH_HERE
 ```
-
 ## Contribution
 
 This project uses an MIT license. You are more than welcome to submit a pull request and contribute on this repository. My future plans for this repository are listed under the "Future Work on AureliusGPT" section, but as long as the pull request is conducive, I will accept it. You can also reach out to me [here](mailto:tarushgs@gmail.com) to join as a contributor to the repository.
