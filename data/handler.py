@@ -1,3 +1,9 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from typing import Dict, List, Any
 import torch, re
 from model.model import Transformer
@@ -6,7 +12,13 @@ from config import argmax, temperature, max_seq_length, max_tokens
 
 class EndpointHandler():
     def __init__(self, path=""):
-        self.model = Transformer().load_state_dict(torch.load("epoch_10.pt")) 
+        model_dir = path if path else os.path.dirname(os.path.abspath(__file__))
+        model_file = os.path.join(model_dir, "epoch_10.pt")
+        if not os.path.exists(model_file):
+            model_file = "epoch_10.pt"
+            
+        self.model = Transformer()
+        self.model.load_state_dict(torch.load(model_file, map_location=torch.device('cpu')))
         self.model.eval()
         self.tokenizer = Tokenizer() #already loads from weights within logic
 
