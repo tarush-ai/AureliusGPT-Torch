@@ -5,7 +5,7 @@ from model.vocab.preprocess import Preprocessor
 
 class Tokenizer:
     def __init__(self):
-        self.path = os.path.join(PROJECT_ROOT, "data", "tokenizer.model")
+        self.path = os.path.join(PROJECT_ROOT, "tokenizer.model")
         self.sp = spm.SentencePieceProcessor()
         if os.path.exists(self.path):
             self.sp.Load(self.path)

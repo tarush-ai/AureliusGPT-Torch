@@ -7,5 +7,4 @@ unsloth
 datasets
 trl
 transformers
-google.colab
 argparse
