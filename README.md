@@ -54,6 +54,10 @@ python -m model.vocabulary.tokenizer test YOUR_RELATIVE_FILEPATH_HERE
 python -m model.vocabulary.preprocess test YOUR_RELATIVE_FILEPATH_HERE
 ```
 
+## Contribution
+
+This project uses an MIT license. You are more than welcome to submit a pull request and contribute on this repository. My future plans for this repository are listed under the "Future Work on AureliusGPT" section, but as long as the pull request is conducive, I will accept it. You can also reach out to me [here](mailto:tarushgs@gmail.com) to join as a contributor to the repository.
+
 ## Data
 The original corpus of _Meditations_ by Marcus Aurelius is 89k tokens approximately when tokenized by a SentencePiece BPE tokenizer trained on a vocabulary length of 2,000. Using Kaplan et al. Chinchilla scaling laws,
 the expected parameter size of the model would be 8.9k parameters (taking the less conservative 1:10 ratio of parameters to corpus tokens). However, given the smaller size of the model and its lack of focus on general intelligence (instead, focused on generating Stoic-adjacent, Aurelius flavored text), this ratio does not apply.
@@ -135,12 +139,6 @@ Beyond weight tuning, config.py will be helpfully automatically adjusted in a fu
 ### Model Upscale
 
 A future project will use the LoRA'd Llama 3.2 1B model to generate signifcantly more parameters of stoic adjacent text, as well as utilizing the works of Zeno, Epictetus, and other famous Stoic thinkers, to build either a Transformer or an MoE model ("Epictetus": _____, "Zeno": _______, "Aurelius": _______) called "StoicDiscourseLM". This will incorporate many elements (including preprocessing functionality) of AureliusGPT but will also be a unique project.
-
-
-## Open Source Contributions
-
-Please feel free to submit a pull request and become a contributor to AureliusGPT (on any of the above listed improvements, or on an entirely different issue). 
-
 
 
 ## Sample Outputs
