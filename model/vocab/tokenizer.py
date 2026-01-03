@@ -23,10 +23,10 @@ class Tokenizer:
         self.sp.load(self.path)
     
     def encode(self, text):
-        return self.sp.encode(text)
+        return self.sp.EncodeAsIds(text)
 
     def decode(self, ids):
-        return self.sp.decode(ids)
+        return self.sp.DecodeIds(ids)
 
 
     def test(self, file):
