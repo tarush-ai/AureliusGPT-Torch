@@ -41,7 +41,8 @@ class EndpointHandler:
         if not os.path.isfile(token_path):
             raise FileNotFoundError(f"Missing tokenizer weights at: {token_path}")
         
-        self.tokenizer = Tokenizer().load_weights(token_path)
+        self.tokenizer = Tokenizer()
+        self.tokenizer.load_weights(token_path)
 
     def _last_token_logits(self, model_out: torch.Tensor) -> torch.Tensor:
         if model_out.dim() == 3:      
