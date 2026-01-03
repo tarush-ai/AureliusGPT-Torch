@@ -1,4 +1,18 @@
-# AureliusGPT-Torch
+<h1 align="center">
+  AureliusGPT-Torch
+</h1>
+
+<div align="center">
+
+  <img src="https://raw.githubusercontent.com/tarush-ai/PersonalWebsite/refs/heads/main/aurelius-logo.png" alt="Aurelius Pixel Art" width="600" />
+  
+  <br />
+  <br />
+
+  [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?logo=huggingface&logoColor=000&style=for-the-badge)](https://huggingface.co/Tarush-AI/AureliusGPT)
+  [![AureliusGPT UI](https://img.shields.io/badge/AureliusGPT_UI-111827?style=for-the-badge)](https://www.tarush.ai/aureliusgpt)
+
+</div>
 
 ## Overview
 
