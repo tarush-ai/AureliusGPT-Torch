@@ -5,10 +5,12 @@ from model.vocab.preprocess import Preprocessor
 
 class Tokenizer:
     def __init__(self):
-        self.path = os.path.join(PROJECT_ROOT, "tokenizer.model")
+        self.path = os.path.join(os.path.dirname(__file__), "tokenizer.model")
         self.sp = spm.SentencePieceProcessor()
         if os.path.exists(self.path):
             self.sp.Load(self.path)
+        else:
+            print(f"Warning: Tokenizer model not found at {self.path}")
     
     def train(self, all_sentences):
         spm.SentencePieceTrainer.train(

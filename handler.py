@@ -52,6 +52,9 @@ class EndpointHandler:
             device=self.device,
         )
 
+        if encoded.numel() == 0:
+            return "AURELIUS: (No input processed)"
+
         currtoken = ""
         outputstring = ""
         countcheck = 0
