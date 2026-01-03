@@ -17,6 +17,7 @@ class EndpointHandler:
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+        #model loading from file
         ckpt_path = os.path.join(self.base_dir, "epoch_10.pt")
         if not os.path.isfile(ckpt_path):
             raise FileNotFoundError(f"Missing checkpoint at: {ckpt_path}")
@@ -35,7 +36,12 @@ class EndpointHandler:
         self.model.load_state_dict(state_dict, strict=True)
         self.model.eval()
 
-        self.tokenizer = Tokenizer()
+        #tokenizer loading from file
+        token_path = os.path.join(self.base_dir, "tokenizer.model")
+        if not os.path.isfile(token_path):
+            raise FileNotFoundError(f"Missing tokenizer weights at: {token_path}")
+        
+        self.tokenizer = Tokenizer().load_weights(token_path)
 
     def _last_token_logits(self, model_out: torch.Tensor) -> torch.Tensor:
         if model_out.dim() == 3:      

@@ -5,12 +5,7 @@ from model.vocab.preprocess import Preprocessor
 
 class Tokenizer:
     def __init__(self):
-        self.path = os.path.join(os.path.dirname(__file__), "tokenizer.model")
         self.sp = spm.SentencePieceProcessor()
-        if os.path.exists(self.path):
-            self.sp.Load(self.path)
-        else:
-            print(f"Warning: Tokenizer model not found at {self.path}")
     
     def train(self, all_sentences):
         spm.SentencePieceTrainer.train(
@@ -20,8 +15,11 @@ class Tokenizer:
             vocab_size=vocab_size,
             user_defined_symbols=["<BEGIN>", "<END>", "<PAD>"]
         )
-        self.sp.load(self.path)
+        self.sp.Load(self.path)
     
+    def load_weights(self, path):
+        self.sp.Load(path)
+
     def encode(self, text):
         return self.sp.EncodeAsIds(text)
 
