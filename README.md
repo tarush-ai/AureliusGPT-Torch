@@ -1,3 +1,15 @@
+---
+language: en
+library_name: pytorch
+license: mit
+tags:
+  - language-model
+  - causal-lm
+  - small-language-model
+model_name: AureliusGPT-Torch
+---
+
+
 <h1 align="center">
   AureliusGPT-Torch
 </h1>
